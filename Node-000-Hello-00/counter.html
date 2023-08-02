@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="counter">0</div>
+    <button class="count">카운터 증가</button>
+  </body>
+  <script>
+    const count = document.querySelector("div#counter");
+    const btn = document.querySelector("button.count");
+
+    btn?.addEventListener("click", () => {
+      const count = counter.textContent;
+      const btn = parseInt(count) + 1;
+      counter.textContent = countNum;
+    });
+    const root = document.querySelector("#root");
+    root.innerHTML = "<h1>반갑습니다</h1>";
+  </script>
+</html>
