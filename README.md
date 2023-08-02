@@ -116,3 +116,7 @@ npm install react-scripts
          </React.StrictMode>
        );
        ```
+
+## Create-react-app을 이용한 React Project 생성
+
+`npx create-react-app [project]`
