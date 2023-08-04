@@ -18,25 +18,27 @@ const TodoInput = (props) => {
   // n1,n2 라는 변수를 만들고 첫번째 요소와 두번째요소를 각각 저장해 달라
   // 근데 JS 에서 하단의 코드 {} 는 객체를 나타낸다
   // props = 분해함 main에서 받음
-  const { content, setContent, todoListAdd } = props;
-  // const content1 = props.content;
-  // const setContent1 = props.setContent;
+  const { todo, setTodo, todoInput } = props;
 
   const inputChangeHandler = (e) => {
     const value = e.target.value;
-    setContent(value);
+    // setContent(value);
+    setTodo({ ...todo, content: value });
   };
 
   const btnClickHandler = (e) => {
     // 추가 버튼을 클릭했을때 할일
     // main 에 있는 todoListAdd 야 content 를 list에 추가해줘
-    todoListAdd(content);
-    setContent("");
+    todoInput(todo.content);
   };
 
   return (
     <div className="input">
-      <input placeholder="TODO" value={content} onChange={inputChangeHandler} />
+      <input
+        placeholder="TODO"
+        value={todo.content}
+        onChange={inputChangeHandler}
+      />
       {/**
        * JSX 주석달기
        * 본문의 tag 내에서 사용하는 주석문
@@ -49,8 +51,16 @@ const TodoInput = (props) => {
        * react 에서는 disabled={true} 라는 속성으로 사용한다.
        *
        */}
-      <button onClick={btnClickHandler} disabled={content.length < 2}>
-        저장
+      <button
+        onClick={btnClickHandler}
+        disabled={todo.content.length < 2}
+        className={todo.id ? "update" : ""}
+      >
+        {/**
+         * id 값이 있는 데 클릭하면 변경
+         * 없는데 클릭하면 추가
+         */}
+        {todo.id ? "변경" : "추가"}
       </button>
     </div>
   );
