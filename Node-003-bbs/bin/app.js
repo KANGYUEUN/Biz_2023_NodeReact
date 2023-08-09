@@ -15,6 +15,7 @@ import helmet from "helmet";
 // 3rd party lib modules
 import cookieParser from "cookie-parser";
 import logger from "morgan";
+import multer from "multer";
 
 // MySQL Sequelize
 import DB from "../models/index.js";
@@ -42,6 +43,9 @@ app.disable("x-powered-by");
 // view engine setup
 app.set("views", path.join("views"));
 app.set("view engine", "pug");
+
+// express 에 multer middle ware 설치
+app.use(multer().array());
 
 // middleWare enable
 app.use(logger("dev"));
