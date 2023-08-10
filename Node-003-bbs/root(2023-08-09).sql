@@ -17,3 +17,5 @@ drop table tbl_bbs;
 show tables;
 
 
+select * from tbl_bbs;
+

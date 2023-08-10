@@ -1,19 +1,25 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { filePreview, filesPreview } from "../modules/ImagePreview.js";
-import { bbsInsert } from "../modules/FetchModules.js";
 import css from "../css/BBsInput.module.css";
+import { useBBsContext } from "../provider/BBsProvider.js";
 
 const BBsInput = () => {
-  const [bbs, setBBs] = useState({
-    b_seq: 0,
-    b_nickname: "",
-    b_title: "",
-    b_content: "",
-  });
+  /**
+   * BBsProvider Store 에 보관되어있는 bbs와  setBbs() 함수를 가져와서 사용 해야 하는데
+   * 그 함수를 가져오기 위해 useContext() 라는 Hook 를 사용한다
+   * useContext()  함수는 어떤 스토어에서 값들을 가져오는지 명시 해 주어야 한다.
+   *
+   * 그런데 BBsInput 에서는 스토어의 이름, 키 등을 알길이 없다
+   * 물론, 알아 낼수 있으나 너무 많은 코드가 필요하다
+   * 그래서 BBsProvider 에서는 자신의 스토어 정보를 포함한 사용자 정의 useContext()를 만들어 두었다.
+   */
+
+  const { bbs, setBBs, bbsInsertCB, imgRef, imgsRef } = useBBsContext();
+
   const [image, setImage] = useState("");
   const [images, setImages] = useState([]);
-  const imgRef = useRef(null);
-  const imgsRef = useRef(null);
+  // const imgRef = useRef(null);
+  // const imgsRef = useRef(null);
 
   const setMainImage = (image) => {
     setImage(image);
@@ -59,34 +65,32 @@ const BBsInput = () => {
    */
 
   const insertButtonClickHandler = async (e) => {
-    // JS 에서 제공하는 Http 객체 : FormData()
-    // formData.append("bbs", bbs);
-    // formData.append("b_img", imgRef.current.files[0]);
-    const formData = new FormData();
-    const file = imgRef?.current.files[0];
-    const files = imgsRef.current.files;
-
-    //  formData 에 bbs(JSON 객체)를 실어서 서버로 보낼때는
-    // 객체를 직접 보낼수 없으므로
-    // 객체를  Serialize (직렬화, 문자열화)
-    const bbsStr = JSON.stringify(bbs);
-
-    // node의 router Upload 미들웨어에서 받을 이름
-    // 모든 파일 정보를 append()
-    // 대표이미지의 저장.
-    formData.append("b_images", file);
-    for (let file of files) {
-      // 멀티파일들이 모두 포함되어 저장된다.
-      formData.append("b_images", file);
-    }
-    // 직렬화 시킨 데이터 추가하기
-    formData.append("bbs", bbsStr);
-
-    // formData.append("b_nickname", bbs.b_nickname);
-    // formData.append("b_title", bbs.b_title);
-    // formData.append("b_content", bbs.b_content);
-    console.log(bbs, formData);
-    await bbsInsert(formData);
+    bbsInsertCB();
+    // // JS 에서 제공하는 Http 객체 : FormData()
+    // // formData.append("bbs", bbs);
+    // // formData.append("b_img", imgRef.current.files[0]);
+    // const formData = new FormData();
+    // const file = imgRef?.current.files[0];
+    // const files = imgsRef.current.files;
+    // //  formData 에 bbs(JSON 객체)를 실어서 서버로 보낼때는
+    // // 객체를 직접 보낼수 없으므로
+    // // 객체를  Serialize (직렬화, 문자열화)
+    // const bbsStr = JSON.stringify(bbs);
+    // // node의 router Upload 미들웨어에서 받을 이름
+    // // 모든 파일 정보를 append()
+    // // 대표이미지의 저장.
+    // formData.append("b_images", file);
+    // for (let file of files) {
+    //   // 멀티파일들이 모두 포함되어 저장된다.
+    //   formData.append("b_images", file);
+    // }
+    // // 직렬화 시킨 데이터 추가하기
+    // formData.append("bbs", bbsStr);
+    // // formData.append("b_nickname", bbs.b_nickname);
+    // // formData.append("b_title", bbs.b_title);
+    // // formData.append("b_content", bbs.b_content);
+    // console.log(bbs, formData);
+    // await bbsInsert(formData);
   };
 
   return (
