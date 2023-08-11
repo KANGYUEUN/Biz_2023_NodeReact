@@ -14,8 +14,11 @@ references tbl_bbs(b_seq); -- 연결 table 은 tbl_bbs 이다.
 -- 유지보수 자동으로 실행된다 
 drop table tbl_files;
 drop table tbl_bbs;
+
 show tables;
 
 
 select * from tbl_bbs;
+
+show tables;
 

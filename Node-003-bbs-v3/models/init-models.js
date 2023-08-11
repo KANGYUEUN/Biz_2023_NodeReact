@@ -6,6 +6,15 @@ const initModels = (sequelize) => {
   const tbl_bbs = _tbl_bbs(sequelize);
   const tbl_files = _tbl_files(sequelize);
 
+  /**
+   * tbl_bbs 와  tbl_files 테이블은 1:N 의 관계가 설정 되어있다.
+   * sequelize 에서 1:N Association 관계가 설정 되어 있을때
+   * 그 설정을 model 에 미리 정해 주어 SELECT JOIN 이 매우 쉽게 구현 될 수 있다.
+   */
+
+  tbl_bbs.hasMany(tbl_files, { as: "F_FILES", foreignKey: "f_bseq" });
+  tbl_files.belongsTo(tbl_bbs, { as: "F_BBS", foreignKey: "f_bseq" });
+
   // 외부에서 사용가능 하도록 설정하기
   return {
     tbl_bbs,

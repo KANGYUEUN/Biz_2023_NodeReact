@@ -56,4 +56,10 @@ router.post("/insert", uploadMiddleWare.single("b_image"), async (req, res) => {
   res.send("OK");
 });
 
+router.get("/list", async (req, res) => {
+  const bbsList = await BBS.findAll({
+    include: { model: FILES, as: "F_FILES", where: { f_seq: b_seq } },
+  });
+  return;
+});
 export default router;
