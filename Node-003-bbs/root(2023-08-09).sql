@@ -18,7 +18,7 @@ drop table tbl_bbs;
 show tables;
 
 
+select * from tbl_files;
 select * from tbl_bbs;
-
 show tables;
 
