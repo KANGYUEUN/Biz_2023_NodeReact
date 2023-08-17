@@ -48,7 +48,7 @@ export const InputDiv = styled.div`
 
   & label,
   input {
-    flex: 1;
+    flex: 3;
     margin: 5px;
     padding: 8px;
   }
