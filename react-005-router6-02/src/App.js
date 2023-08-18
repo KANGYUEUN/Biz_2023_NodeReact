@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./css/App.css";
 import { useRoutes, Outlet, useNavigate } from "react-router-dom";
 import BBsMain from "./comps/BBsMain";
-import { Button } from "./styled/BBsStyled";
+import { Button } from "./styled/MyButton";
 
 /**
  * < react-router-dom 의 useNavigate hooks 함수 >
@@ -21,6 +21,17 @@ import { Button } from "./styled/BBsStyled";
  * 특히, useRedirect 의 경우 별도로 Navigate Component를 통해 실행 가능 하다.
  */
 
+// App Component 내에 inner Component 를 생성하기
+const AppBody = () => {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+      </header>
+      <Outlet />
+    </div>
+  );
+}; // end AppBody
 /**
  * App Component 를
  * react-router-dom v6 에서 useRouter() Hook 함수를 생성하고
@@ -30,17 +41,6 @@ import { Button } from "./styled/BBsStyled";
 function App() {
   // useNavigate Hooks 함수를 사용하여 navigate 객체 생성하기
   const navigate = useNavigate();
-  // App Component 내에 inner Component 를 생성하기
-  const AppBody = () => {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-        </header>
-        <Outlet />
-      </div>
-    );
-  }; // end AppBody
 
   // Hooks 함수 사용하여 path를 보고 <AppBody>를 호출한다.
   // App.js 를 화면에 표현하면, react-router-dom 에 의해 path를 감지하고
