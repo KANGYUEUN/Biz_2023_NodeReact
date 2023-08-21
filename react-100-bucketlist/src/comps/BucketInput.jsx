@@ -43,6 +43,7 @@ const BucketInput = (props) => {
         multiple="multiple"
         onChange={handleFileChange}
       />
+
       {previewImage && (
         <div>
           <img
