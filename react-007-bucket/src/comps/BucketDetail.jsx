@@ -2,13 +2,23 @@ import { Form, useLoaderData, redirect } from "react-router-dom";
 import dImage from "../assets/default.png";
 import Button from "../shareComps/Button";
 import css from "./BucketDetail.module.scss";
-import { deleteBucket, getBucket } from "../modules/bucketFech";
+import { deleteBucket, getBucket, completeBucket } from "../modules/bucketFech";
+import { useState } from "react";
 
 export const detailLoader = async ({ params }) => {
   // const id = params.id
   const { id } = params;
   const bucket = await getBucket(id);
   return { bucket };
+};
+
+export const completeAction = async ({ params }) => {
+  if (window.confirm("BUCKET 을 완료 하셨습니까?")) {
+    // complete
+    await completeBucket(params.id);
+    return redirect("/");
+  }
+  return redirect(`/content/${params.id}`);
 };
 
 export const deleteAction = async ({ params }) => {
@@ -19,8 +29,18 @@ export const deleteAction = async ({ params }) => {
   }
   return redirect(`/content/${params.id}`);
 };
+
 const BucketDetail = () => {
   const { bucket } = useLoaderData();
+  const [completed, setCompleted] = useState(bucket.completed || false);
+  const handleComplete = async () => {
+    if (window.confirm("BUCKET을 완료 하셨습니까?")) {
+      await completeBucket(bucket.id);
+      setCompleted(true);
+      return redirect("/");
+    }
+  };
+
   return (
     <article className={css.buck_detail}>
       <div className={css.first}>
@@ -36,8 +56,8 @@ const BucketDetail = () => {
           <Form action="edit">
             <Button>수정</Button>
           </Form>
-          <Form action="complete" method="POST">
-            <Button bgColor="green">완료</Button>
+          <Form action="complete" method="POST" onSubmit={handleComplete}>
+            <Button bgColor="green">{completed ? "완료됨" : "완료"}</Button>
           </Form>
           <Form action="delete" method="POST">
             <Button bgColor="red">삭제</Button>

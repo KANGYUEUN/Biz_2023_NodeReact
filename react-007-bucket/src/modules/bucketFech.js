@@ -80,6 +80,17 @@ export const newBucket = async () => {
   return bucketDto;
 };
 
+export const completeBucket = async (id) => {
+  const bucketList = await getBucketList();
+  const resultList = bucketList.map((bucket) => {
+    if (bucket.id === id) {
+      return { ...bucket, completed: true };
+    }
+    // return bucket;
+  });
+  await setBucketList(resultList);
+};
+
 export const deleteBucket = async (id) => {
   const bucketList = await getBucketList();
   const resultList = bucketList.filter((item) => item.id !== id);
