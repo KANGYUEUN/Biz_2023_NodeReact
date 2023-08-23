@@ -36,6 +36,9 @@ const BucketDetail = () => {
           <Form action="edit">
             <Button>수정</Button>
           </Form>
+          <Form action="complete" method="POST">
+            <Button bgColor="green">완료</Button>
+          </Form>
           <Form action="delete" method="POST">
             <Button bgColor="red">삭제</Button>
           </Form>
