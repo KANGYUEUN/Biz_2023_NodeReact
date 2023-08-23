@@ -1,7 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import BucketMain, { mainLoader, mainAction } from "../comps/BucketMain";
 // import { bucketLoader, bucketAction } from "../modules/routerAction";
-import BucketUpdate, { updateLoader } from "../comps/BucketUpdate";
+import BucketUpdate, { updateAction } from "../comps/BucketUpdate";
+import BucketDetail, {
+  detailLoader,
+  deleteAction,
+} from "../comps/BucketDetail";
 
 /**
  *  const router = createBrowserRouter([]);
@@ -18,7 +22,14 @@ const router = createBrowserRouter([
     loader: mainLoader,
     action: mainAction,
     children: [
-      { path: "content/:id", element: <BucketUpdate />, loader: updateLoader },
+      { path: "content/:id", element: <BucketDetail />, loader: detailLoader },
+      {
+        path: "content/:id/edit",
+        element: <BucketUpdate />,
+        loader: detailLoader,
+        action: updateAction,
+      },
+      { path: "content/:id/delete", action: deleteAction },
     ],
   },
 ]);
