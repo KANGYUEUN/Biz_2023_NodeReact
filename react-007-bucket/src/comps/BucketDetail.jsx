@@ -2,45 +2,57 @@ import { Form, useLoaderData, redirect } from "react-router-dom";
 import dImage from "../assets/default.png";
 import Button from "../shareComps/Button";
 import css from "./BucketDetail.module.scss";
-import { deleteBucket, getBucket, completeBucket } from "../modules/bucketFech";
-import { useState } from "react";
+import { deleteBucket, getBucket, saveBucket } from "../modules/bucketFech";
 
 export const detailLoader = async ({ params }) => {
   // const id = params.id
   const { id } = params;
   const bucket = await getBucket(id);
+  if (!bucket) {
+    return redirect("/");
+  }
   return { bucket };
 };
 
 export const completeAction = async ({ params }) => {
-  if (window.confirm("BUCKET 을 완료 하셨습니까?")) {
-    // complete
-    await completeBucket(params.id);
-    return redirect("/");
-  }
+  const bucket = await getBucket(params.id);
+  const completBucket = { ...bucket, complete: !bucket.complete };
+  await saveBucket(completBucket);
   return redirect(`/content/${params.id}`);
 };
 
 export const deleteAction = async ({ params }) => {
-  if (window.confirm("정말 삭제 하시겠습니까?")) {
-    // Delete
+  if (window.confirm("정말 삭제 할까요?")) {
     await deleteBucket(params.id);
     return redirect("/");
   }
   return redirect(`/content/${params.id}`);
 };
 
+export const favoiteAction = async ({ params, request }) => {
+  const formData = await request.formData();
+  const resultBucket = await getBucket(params.id);
+  // formData() 데이터 중에서 input 에 저장된 데이터만 추출하기
+  // const newBucket = Object.fromEntries(formData);
+  const favorite = formData.get("favorite") === "true";
+  const updateBucket = { ...resultBucket, favoite: !favorite };
+  await saveBucket(updateBucket);
+  return "";
+};
+
+const Favorite = ({ bucket }) => {
+  let favorite = bucket.favoite;
+  return (
+    <Form method="POST">
+      <button name="favorite" value={favorite ? "true" : "false"}>
+        {favorite ? "★" : "☆"}
+      </button>
+    </Form>
+  );
+};
+
 const BucketDetail = () => {
   const { bucket } = useLoaderData();
-  const [completed, setCompleted] = useState(bucket.completed || false);
-  const handleComplete = async () => {
-    if (window.confirm("BUCKET을 완료 하셨습니까?")) {
-      await completeBucket(bucket.id);
-      setCompleted(true);
-      return redirect("/");
-    }
-  };
-
   return (
     <article className={css.buck_detail}>
       <div className={css.first}>
@@ -51,16 +63,27 @@ const BucketDetail = () => {
         />
       </div>
       <div className={css.last}>
-        <h1>{bucket.bucket || "None"}</h1>
+        <h1>
+          {bucket.bucket || "None"}
+          <Favorite bucket={bucket} />
+        </h1>
         <div>
           <Form action="edit">
             <Button>수정</Button>
           </Form>
-          <Form action="complete" method="POST" onSubmit={handleComplete}>
-            <Button bgColor="green">{completed ? "완료됨" : "완료"}</Button>
+          <Form action="complete" method="POST">
+            <Button bgColor={bucket.complete ? "orange" : "green"}>
+              {bucket.complete ? "완료취소" : "완료"}
+            </Button>
           </Form>
           <Form action="delete" method="POST">
-            <Button bgColor="red">삭제</Button>
+            <Button
+              className={css.delete}
+              bgColor="red"
+              disabled={bucket.complete ? "disabled" : ""}
+            >
+              삭제
+            </Button>
           </Form>
         </div>
       </div>

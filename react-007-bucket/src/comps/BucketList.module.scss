@@ -12,8 +12,18 @@
     }
     & img {
       border-radius: 50%;
-      margin: 5px;
+      width: 50px;
       height: 30px;
+      margin: 10px 0 0 20px;
+      /*
+        img tag 와 text 또는 inline tag들이 서로 어울리는 배치를 하기위한 설정 
+      */
+      float: left;
+    }
+    & span {
+      display: inline-block;
+      line-height: 50px;
+      padding-left: 20px;
     }
   }
   & a {
@@ -26,7 +36,9 @@
     margin: 0;
     color: inherit;
     border: 1px solid transparent;
-
+    &.active {
+      color: red;
+    }
     // line-height
     // 표현되는 글자의 높이를 지정하는 속성
     // 다른 tag 와 중간 위치를 정렬할때 트릭으로 사용 할 수 있는 속성이다
