@@ -43,7 +43,9 @@ firebase login
 npm run build
 
 firebase init
-#() Hosting:Configure files ...  선택
-# Use an existing project 선택
-# 배포할 프로젝트 선택
+    #() Hosting:Configure files ...  선택
+    # Use an existing project 선택
+    # 배포할 프로젝트 선택
+    # public 폴더를 build 로 변경
+    #  기타 나머지 모두 N
 ```
